@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>NYT search</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+    
+    #banner{
+    background:navy;
+    text-align: center;
+    padding: 3em;
+    margin: 0em 1em 0em 1em;
+}
+h1 {
+    color: white;
+}
+h3 {
+    background: lightblue;
+    margin-top: 1em;
+}
+body {
+    max-width: 960px;
+    margin: 0 auto;
+}
+    
+    </style>
+</head>
+<body>
+    <header id="banner">
+        <h1>New York Times Search</h1>
+    </header>
+    <container id="criteria">
+    <form class="col-sm-12">
+        <header>
+            <h3>Search Parameters</h3>
+        </header>
+        <div class="form-group">
+            <label for="inputAddress2">Search Term:</label>
+            <input type="text" class="form-control" id="searchTerm" placeholder="">
+        </div>
+        <div class="form-group">
+          <label for="inputAddress">Number of records to retrieve:</label>
+          <input type="text" class="form-control" id="numRec" placeholder="5">
+        </div>
+        <div class="form-group">
+          <label for="inputAddress2">Start Year (Optional)</label>
+          <input type="text" class="form-control" id="startYear" placeholder="">
+        </div>
+        <div class="form-group">
+            <label for="inputAddress2">End Year (Optional)</label>
+            <input type="text" class="form-control" id="endYear" placeholder="">
+          </div>
+        </div>
+        <div class="form-group">
+        </div>
+        <button type="submit" id="search" class="btn btn-primary">Search</button>
+        <button type="submit" id="clear" class="btn btn-primary">Clear Results</button>
+      </form>
+
+    </container>
+    <container id="results">
+      <div id="resultsHere"></div>
+    </container>
+
+
+    <script>
+
+
+       
+        
+
+        var url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
+        url += '?' + $.param({
+            'api-key': "116517ef257b44c6aafea0a56e5e6600",
+            "q": $("#searchTerm").text()
+        });
+        
+
+
+
+        $("#search").on("click", function (e) {
+            e.preventDefault();
+            console.log("fired")
+            $.ajax({
+                url: url,
+                method: 'GET',
+            }).done(function (result) {
+                console.log(result);
+                console.log(url);
+               var docs = result.response.docs;
+                for (var i =0; i < docs.length; i++){
+                    console.log(docs[i].headline.main);
+                }
+
+                var art = $("<div>");
+                    art.text(docs);
+                    $("#results").append(JSON.stringify(docs));
+                    
+                })
+
+        });
+
+
+
+    </script>
+
+    </body>
+    </html>
